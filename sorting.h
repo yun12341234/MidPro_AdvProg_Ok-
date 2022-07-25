@@ -22,4 +22,4 @@ void bubble(enemies a[],int n){
       }
     }
   }
-  }
+}

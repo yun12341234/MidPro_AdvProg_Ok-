@@ -8,24 +8,32 @@ class player{
       int hp;
       int atk;
       int def;
+      int score;
+      player* next_player;
 
     public:
-      player(int=100, int=20, int=20);
+      player(int=100, int=20, int=10, int=0);
       void print_name();
       void print_hp();
       void set_name(string);
       void print_all();
       void print_atk();
       void print_def();
+      void print_score();
       void attack();
       void draw_player();
       int get_hp();
       int get_attack();
+      int get_score();
+      string get_name();
       int die();
       int damage(int);
       void add_hp(int);
       void add_atk(int);
       void add_def(int);
+      void add_score(int);
+      void set_next(player*);
+      player* get_next();
       ~player();
 };
 
@@ -33,11 +41,14 @@ player::~player(){
   //cout<<"Player Destructed"<<endl;
 }
 
-player::player(int h, int a, int d){
+player::player(int h, int a, int d, int s){
   hp=h;
   atk=a;
   def=d;
+  score=s;
+  next_player=NULL;
 }
+
 
 void player::set_name(string n){name=n;}
 
@@ -57,11 +68,16 @@ void player::print_def(){
   cout<<def<<endl;
 }
 
+void player::print_score(){
+  cout<<score<<endl;
+}
+
 void player::print_all(){
   cout<<"Name: "<<name<<endl;
   cout<<"HP: "<<hp<<endl;
   cout<<"Attack: "<<"1->"<<atk<<endl;
   cout<<"Defense: "<<def<<endl;
+  cout<<"Score: "<<score<<endl;
 }
 
 void player::draw_player(){
@@ -79,6 +95,14 @@ int player::get_attack(){
 
 int player::get_hp(){
   return hp;
+}
+
+int player::get_score(){
+  return score;
+}
+
+string player::get_name(){
+  return name;
 }
 
 int player::damage(int x){
@@ -111,6 +135,18 @@ void player::add_atk(int x){
 
 void player::add_def(int x){
   def+=x;
+}
+
+void player::add_score(int x){
+  score+=x;
+}
+
+void player::set_next(player *p){
+  next_player = p;
+}
+
+player* player::get_next(){
+  return next_player;
 }
 
 #endif
