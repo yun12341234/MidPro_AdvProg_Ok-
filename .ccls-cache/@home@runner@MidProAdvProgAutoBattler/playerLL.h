@@ -8,7 +8,7 @@ public:
   playerLL();
   void insert(player*);
   void printList();
-  //~playerLL();
+  ~playerLL();
 };
 
 playerLL::playerLL(){
@@ -20,7 +20,8 @@ void playerLL::insert(player *p){
   player* t=head;
   if(t==NULL) head=p;
   else{
-   while(t->get_next()) t=t->get_next();
+   while(t->get_next()) 
+   t=t->get_next();
    t->set_next(p);
     }
   size++;
@@ -40,4 +41,14 @@ void playerLL::printList(){
           currentPtr = currentPtr->get_next();   
       }
     }
+}
+
+playerLL::~playerLL(){
+  player* t;
+  t=head;
+  while(head){
+      t=head->get_next();
+      delete head;
+      head=t;
+  } 
 }

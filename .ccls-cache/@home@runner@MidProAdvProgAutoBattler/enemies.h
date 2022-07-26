@@ -1,6 +1,6 @@
 #ifndef enemies_h
 #define enemies_h
-#include "player.h"
+//#include "player.h"
 
 class enemies{
 private:
@@ -8,6 +8,7 @@ private:
       int hp;
       int atk;
       int def;
+      enemies* next_enemy;
 public:
       void set_name(string);
       void set_hp(int);
@@ -20,13 +21,24 @@ public:
       void print_all();
       int get_hp();
       int get_attack();
+      int get_def();
+      string get_name();
       void draw_enemies();
       int die();
       int damage(int);
+      void set_next(enemies*);
+      enemies* get_next();
 
       enemies(string="Dan",int=100,int=20,int=10);
       ~enemies();
 };
+
+enemies::enemies(string n,int h,int a,int d){
+  name=n;
+  hp=h;
+  atk=a;
+  def=d;
+}
 
 void enemies::set_name(string x){name=x;}
 
@@ -67,12 +79,14 @@ int enemies::get_attack(){
   return atk;
 }
 
-enemies::enemies(string n,int h,int a,int d){
-  name=n;
-  hp=h;
-  atk=a;
-  def=d;
+int enemies::get_def(){
+  return def;
 }
+
+string enemies::get_name(){
+  return name;
+}
+
 
 int enemies::damage(int x){
   int d=(def-x);
@@ -95,6 +109,14 @@ int enemies::die(){
   else{
     return 0;
   }
+}
+
+void enemies::set_next(enemies *e){
+  next_enemy=e;
+}
+
+enemies* enemies::get_next(){
+  return next_enemy;
 }
 
 #endif

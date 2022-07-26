@@ -1,128 +1,152 @@
 #include <iostream>
 using namespace std;
-#include "enemies.h"
-#include "player.h"
-#include "sorting.h"
-#include "stack.h"
-#include <cstring>
-#include <stdlib.h>
-#include <time.h>
 #include <iomanip>
+#include "enemies.h"
+#include "enemiesS.h"
+#include "player.h"
 #include "playerLL.h"
-#include <string.h>
+#include "sorting.h"
+#include <cstdlib>
+#include <cstring>
 
-void battle(player *, enemies *, int *);
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
+
+void battle(player *, enemies *, int *, enemiesS *);
 void reward(player *);
 int sorting(int, int);
 void gameover(int *);
 
 int main(int argc, char **argv) {
   playerLL p;
-  
-  while(1){
-
-  int restart;
-    
-  int gameover = 0;
-  srand(time(NULL));
-  system("clear");
-
-  player* playerP = new player();
-  string Pname;
-
-  //player* player = new player;
-  //p.insert(player);
-
-  cout << "Please enter a name: ";
-
-  fflush(stdin);
-  
-  cin>>Pname;
-
-  playerP->set_name(Pname);
-
-  cout << endl;
+  enemiesS e;
 
   system("clear");
 
-  playerP->print_all();
-  playerP->draw_player();
+  while (1) {
 
-  cout << "Press any key to continue...";
-  cin.get();
+    int restart;
 
-  system("clear");
+    int gameover = 0;
+    srand(time(NULL));
 
-  cout << "There will be enemies that you have to battle." << endl;
-  cout << "Your HP is your health. If that reaches 0, the game is over."
-       << endl;
-  cout << "Your attack has a range. As you can see, your attack would be a "
-          "random number between 1 and 20."
-       << endl;
-  cout << "You defense is a way to protect yourself. The defense you have will "
-          "subtract the total amount the enemy deals to you. So, if the enemy "
-          "hits you less than your defense, you will not take any damage."
-       << endl
-       << endl;
+    player *playerP = new player();
+    string Pname;
 
-  int n = 10;
-  enemies *e = new enemies[n]{
-      {"Dan", 25, 10, 2},        {"Juan", 40, 10, 4},   {"Buay", 50, 7, 2},
-      {"Best", 60, 20, 6},       {"Kong", 70, 28, 6},   {"Sadge", 80, 26, 8},
-      {"Lena", 100, 34, 10},     {"Pepsi", 120, 40, 5}, {"Bam", 160, 40, 2},
-      {"SAITAMA", 1000, 500, 10}};
+    // player* player = new player;
+    // p.insert(player);
 
-  cout << "This is the attack damage of enemies you have to encouter" << endl;
-  bubble(e, n);
-  display(e, n);
-  cout << endl;
-  cout << endl;
-  int i;
-  for (i = 0; i < n && !gameover; i++) {
-    cout << "The enemy that you will face is: " << endl;
-    cout << endl;
-    e[i].print_all();
+    cout << "Please enter a name: ";
+
+    fflush(stdin);
+
+    cin >> Pname;
+
+    playerP->set_name(Pname);
 
     cout << endl;
 
-    cout << "Your stats are: " << endl;
     playerP->print_all();
+    playerP->draw_player();
 
-    cout << endl;
-
-    cout << "Press any key to fight the enemy...";
+    cout<<endl;
+    cout<<"Press any key to continue...";
+    cin.get();
     cin.get();
 
     system("clear");
+    
 
-    battle(playerP, e + i, &gameover);
-  }
-      if (gameover) {
-      cout<<endl;
+    cout << "There will be enemies that you have to battle." << endl;
+    cout << "Your HP is your health. If that reaches 0, the game is over."
+         << endl;
+    cout << "Your attack has a range. As you can see, your attack would be a "
+            "random number between 1 and 20."
+         << endl;
+    cout
+        << "You defense is a way to protect yourself. The defense you have "
+           "will "
+           "subtract the total amount the enemy deals to you. So, if the enemy "
+           "hits you less than your defense, you will not take any damage."
+        << endl;
+    cout<<"For each enemy you defeat, you will recieve 1 score"<<endl<<endl;
+
+    e.push(new enemies("SAITAMA",1000,500,10));
+    e.push(new enemies("Bam", 160,40,2));
+    e.push(new enemies("Pepsi", 120,40,5));
+    e.push(new enemies("Lena", 100,34,10));
+    e.push(new enemies("Sadge", 80,26,8));
+    e.push(new enemies("Kong", 70,28,6));
+    e.push(new enemies("Best", 60,20,6));
+    e.push(new enemies("Buay", 50,7,2));
+    e.push(new enemies("Juan", 40,10,4));
+    e.push(new enemies("Dan",25,10,2));
+
+
+    int n = e.get_size();
+
+    //cout << "This is the attack damage of enemies you have to encouter" << endl;
+    //bubble(r,n);
+    //display(r,n);
+    cout << endl;
+    cout << endl;
+    enemies* curr = e.get_top();
+    for (int i = 0; i<n && !gameover; i++) {
+      cout << "The enemy that you will face is: " << endl;
+      cout << endl;
+      curr->print_all();
+
+      cout << endl;
+
+      cout << "Your stats are: " << endl;
+      playerP->print_all();
+
+      cout << endl;
+
+      cout<<"Press any key to fight...";
+      cin.get();
+
+      system("clear");
+
+      battle(playerP, curr, &gameover, &e);
+      curr = curr->get_next();
+    }
+    if (gameover) {
+      cout << endl;
       p.insert(playerP);
       p.printList();
-      cout<<endl;
-      cout<<"Do you wish to play again?"<<endl;
-      cout<<"0 to exit"<<endl;
-      cout<<"1 to continue"<<endl;
-      cout<<endl;
-      cout<<"Enter number: "
-      cin>>restart;
-      if(!restart){
-        return 0;
+      cout << endl;
+      cout << "Do you wish to play again?" << endl;
+      cout << "0 to exit" << endl;
+      cout << "1 to continue" << endl;
+      cout << endl;
+      cout << "Enter number: ";
+      cin >> restart;
+      system("clear");
+
+    } else {
+
+      p.insert(playerP);
+      p.printList();
+      cout << endl;
+      cout << "You won the game. Congradulations!" << endl;
+      cout << "0 to exit" << endl;
+      cout << "1 to continue" << endl;
+      cout << endl;
+      cout << "Enter number: ";
+      cin >> restart;
+    }
+
+    if (!restart) {
+      return 0;
     }
   }
-}
-  system("clear");
-  cout << "You won the game. Congradulations!" << endl;
-  
   return 0;
-  }
+}
 
-  
-
-
-void battle(player *p, enemies *e, int *n) {
+void battle(player *p, enemies *e, int *n, enemiesS *en) {
   int atkP;
   int atkE;
   int x;
@@ -154,11 +178,11 @@ void battle(player *p, enemies *e, int *n) {
     e->print_hp();
     cout << endl;
 
+    sleep(2);
+
     p->die();
     e->die();
 
-    cout << "Press any key to continue...";
-    cin.get();
     cout << endl;
 
     if (p->die() == 1) {
@@ -167,6 +191,7 @@ void battle(player *p, enemies *e, int *n) {
       break;
     } else if (e->die() == 1) {
       reward(p);
+      en->pop();
     }
   }
 }
@@ -204,17 +229,13 @@ void reward(player *p) {
   p->add_score(1);
 
   cout << endl;
-  cout << "Press any key to continue..." << endl;
-  cin.get();
 }
 
 void gameover(int *gameover) {
-  cout << "You have no more health, Your dead." << endl;
+  cout << "You have no more health, Your're dead." << endl;
   cout << "Press any key to accept your fate..." << endl;
-  cin.get();
-  system("clear");
-  cout << "Game over" << endl;
 
+  cout << "Game over" << endl;
 
   *gameover = 1;
 }
