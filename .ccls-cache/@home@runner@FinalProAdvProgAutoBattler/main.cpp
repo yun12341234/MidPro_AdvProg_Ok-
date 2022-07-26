@@ -48,7 +48,8 @@ int main(int argc, char **argv) {
     cout << endl;
 
     playerP->print_all();
-    playerP->draw_player();
+    playerP->draw_player2();
+    cout<<endl;
 
     cout<<endl;
     cout<<"Press any key to continue...";

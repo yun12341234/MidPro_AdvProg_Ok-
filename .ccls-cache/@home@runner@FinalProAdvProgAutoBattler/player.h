@@ -1,6 +1,7 @@
 #ifndef player_h
 #define player_h
 #include "enemies.h"
+#include "Sorting.h"
 
 class player{
     private: 
@@ -17,6 +18,7 @@ class player{
       void print_hp();
       void set_name(string);
       void print_all();
+      void draw_player2();
       void print_atk();
       void print_def();
       void print_score();
@@ -80,13 +82,23 @@ void player::print_all(){
   cout<<"Score: "<<score<<endl;
 }
 
-void player::draw_player(){
-  cout<<"==============="<<endl;
-  cout<<"|  O        O |"<<endl;
-  cout<<"|             |"<<endl;
-  cout<<"|             |"<<endl;
-  cout<<"|     ===     |"<<endl;
-  cout<<"==============="<<endl;
+
+void player::draw_player2(){
+  int a[15] ={7,4,8,2,0,1,6,2,5,5,1,9,6,9,5,};
+  int b[15] = {4,9,4,9,3,2,5,7,1,5,8,1,6,2,6,};
+  int n=15;
+  bubble(a,n);
+  display(a,n);
+  cout<<endl;
+  cout<<"1  O        O 8"<<endl;
+  cout<<"2             7"<<endl;
+  cout<<"3             6"<<endl;
+  cout<<"4     111     5"<<endl;
+  bubble(b,n);
+  display(b,n);
+  
+  
+  
 }
 
 int player::get_attack(){
